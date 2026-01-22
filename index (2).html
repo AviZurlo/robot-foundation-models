@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Foundation Models</title>
+    <meta name="description" content="Tracking the evolution of embodied AI and robot foundation models">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>Robot<span>Foundation</span>Models</h1>
+                <p class="logo-tag">// Tracking the evolution of embodied AI</p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value" id="stat-models">—</div>
+                    <div class="stat-label">Models</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="stat-orgs">—</div>
+                    <div class="stat-label">Organizations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="stat-years">—</div>
+                    <div class="stat-label">Timeline</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading state -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">LOADING MODELS...</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="error" class="error">
+            <div class="error-title">FAILED TO LOAD</div>
+            <p class="error-message"></p>
+        </div>
+
+        <!-- Main content -->
+        <main id="main-content" style="display: none;">
+            <section class="carousel-section">
+                <!-- Prev arrow -->
+                <nav class="carousel-nav carousel-nav--prev">
+                    <button class="nav-btn" onclick="prevCard()" aria-label="Previous model">←</button>
+                </nav>
+
+                <!-- Card display area -->
+                <div id="carousel"></div>
+
+                <!-- Next arrow -->
+                <nav class="carousel-nav carousel-nav--next">
+                    <button class="nav-btn" onclick="nextCard()" aria-label="Next model">→</button>
+                </nav>
+
+                <!-- Counter -->
+                <div class="carousel-counter" id="carousel-counter">01 / 00</div>
+
+                <!-- Keyboard hint -->
+                <div class="keyboard-hint">
+                    <span class="key">←</span>
+                    <span class="key">→</span>
+                    <span>to navigate</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
