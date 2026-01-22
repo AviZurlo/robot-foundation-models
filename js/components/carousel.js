@@ -58,51 +58,56 @@ function updateCounter() {
 
 function renderCurrentCard() {
     if (!carouselContainer || allModels.length === 0) return;
-    
-    const model = allModels[currentIndex];
-    const categoryColor = getCategoryColor(model.category);
-    
-    // Generate random rotation for decorative elements
-    const rotation = (Math.random() - 0.5) * 6;
-    const accentRotation = (Math.random() - 0.5) * 15;
-    
+
+    // Calculate indices for prev, current, and next cards
+    const prevIndex = (currentIndex - 1 + allModels.length) % allModels.length;
+    const nextIndex = (currentIndex + 1) % allModels.length;
+
+    // Render all three cards
     carouselContainer.innerHTML = `
-        <div class="card-wrapper">
-            <!-- Decorative background shapes -->
-            <div class="deco-shape deco-1" style="transform: rotate(${accentRotation}deg)"></div>
-            <div class="deco-shape deco-2" style="transform: rotate(${-accentRotation}deg)"></div>
-            
-            <article class="model-card" style="--card-rotation: ${rotation}deg">
+        ${renderCard(allModels[prevIndex], prevIndex, 'side')}
+        ${renderCard(allModels[currentIndex], currentIndex, 'center')}
+        ${renderCard(allModels[nextIndex], nextIndex, 'side')}
+    `;
+}
+
+function renderCard(model, index, position) {
+    const categoryColor = getCategoryColor(model.category);
+    const wrapperClass = position === 'center' ? 'card-wrapper card-wrapper--center' : 'card-wrapper card-wrapper--side';
+
+    return `
+        <div class="${wrapperClass}">
+            <article class="model-card">
                 <!-- Category badge - floating -->
                 <div class="category-badge" style="background: ${categoryColor.bg}; color: ${categoryColor.text}">
                     ${model.category || 'UNKNOWN'}
                 </div>
-                
+
                 <!-- Main content area -->
                 <div class="card-content">
                     <!-- Header with index number -->
-                    <div class="card-index">${String(currentIndex + 1).padStart(2, '0')}</div>
-                    
+                    <div class="card-index">${String(index + 1).padStart(2, '0')}</div>
+
                     <header class="card-header">
                         <h2 class="model-name">${model.name}</h2>
                         <div class="model-org">${model.org}</div>
                     </header>
-                    
+
                     <!-- Date stamp -->
                     <time class="model-date">${model.date}</time>
-                    
+
                     <!-- Technical specs grid -->
                     <div class="specs-grid">
-                        ${model.params && model.params !== '—' && model.params !== 'N/A' ? `
-                            <div class="spec-item">
-                                <span class="spec-label">PARAMS</span>
-                                <span class="spec-value">${model.params}</span>
-                            </div>
-                        ` : ''}
                         ${model.backbone && model.backbone !== '—' && model.backbone !== 'N/A' ? `
                             <div class="spec-item">
                                 <span class="spec-label">BACKBONE</span>
                                 <span class="spec-value">${model.backbone}</span>
+                            </div>
+                        ` : ''}
+                        ${model.params && model.params !== '—' && model.params !== 'N/A' ? `
+                            <div class="spec-item">
+                                <span class="spec-label">PARAMS</span>
+                                <span class="spec-value">${model.params}</span>
                             </div>
                         ` : ''}
                         ${model.decoder && model.decoder !== '—' && model.decoder !== 'N/A' ? `
@@ -117,14 +122,22 @@ function renderCurrentCard() {
                                 <span class="spec-value">${model.speed}</span>
                             </div>
                         ` : ''}
+                        ${model.data && model.data !== '—' && model.data !== 'N/A' ? `
+                            <div class="spec-item">
+                                <span class="spec-label">DATA</span>
+                                <span class="spec-value">${model.data}</span>
+                            </div>
+                        ` : ''}
                     </div>
-                    
+
                     <!-- Insight text -->
-                    <div class="model-insight">
-                        <span class="insight-label">INSIGHT_</span>
-                        <p>${model.insight}</p>
-                    </div>
-                    
+                    ${model.insight && model.insight !== '—' && model.insight !== 'N/A' ? `
+                        <div class="model-insight">
+                            <span class="insight-label">INSIGHT_</span>
+                            <p>${model.insight}</p>
+                        </div>
+                    ` : ''}
+
                     <!-- Links -->
                     <nav class="card-links">
                         ${model.paper_link ? `<a href="${model.paper_link}" class="card-link" target="_blank" rel="noopener">Paper↗</a>` : ''}

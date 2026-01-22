@@ -50,8 +50,8 @@ body {
     font-family: var(--font-body);
     background: var(--black);
     color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
     position: relative;
 }
 
@@ -71,10 +71,13 @@ body::before {
 
 /* --- LAYOUT CONTAINER --- */
 .container {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
     position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- HEADER --- */
@@ -82,10 +85,11 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
     border-bottom: 3px solid var(--white);
     position: relative;
+    flex-shrink: 0;
 }
 
 .header::after {
@@ -104,7 +108,7 @@ body::before {
 
 .logo h1 {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 6rem);
+    font-size: clamp(2rem, 6vw, 4rem);
     line-height: 0.85;
     letter-spacing: -0.02em;
     color: var(--white);
@@ -152,7 +156,7 @@ body::before {
 
 .stat-value {
     font-family: var(--font-display);
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     line-height: 1;
     color: var(--white);
 }
@@ -170,10 +174,12 @@ body::before {
 /* --- CAROUSEL SECTION --- */
 .carousel-section {
     position: relative;
-    min-height: 70vh;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    min-height: 0;
 }
 
 /* Navigation arrows */
@@ -230,11 +236,11 @@ body::before {
 /* Counter */
 .carousel-counter {
     position: absolute;
-    bottom: var(--space-lg);
+    bottom: var(--space-md);
     left: 50%;
     transform: translateX(-50%);
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--white);
     opacity: 0.6;
     letter-spacing: 0.2em;
@@ -243,10 +249,10 @@ body::before {
 /* Keyboard hint */
 .keyboard-hint {
     position: absolute;
-    bottom: var(--space-lg);
-    right: var(--space-lg);
+    bottom: var(--space-md);
+    right: var(--space-md);
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--white);
     opacity: 0.3;
     display: flex;
@@ -264,13 +270,29 @@ body::before {
 /* --- CARD STYLES --- */
 #carousel {
     width: 100%;
-    max-width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
     perspective: 1000px;
+    padding: 0 var(--space-lg);
 }
 
 .card-wrapper {
     position: relative;
-    padding: var(--space-xl);
+    flex: 0 0 auto;
+    transition: all 0.3s ease;
+}
+
+.card-wrapper--side {
+    opacity: 0.4;
+    transform: scale(0.85);
+    filter: grayscale(0.3);
+}
+
+.card-wrapper--center {
+    flex: 0 0 500px;
+    z-index: 10;
 }
 
 /* Decorative shapes */
@@ -303,15 +325,11 @@ body::before {
     background: var(--white);
     color: var(--black);
     position: relative;
-    transform: rotate(var(--card-rotation, 0deg));
-    transition: transform 0.3s ease;
-    box-shadow: 
+    box-shadow:
         20px 20px 0 0 rgba(0, 0, 0, 0.3),
         0 0 0 3px var(--black);
-}
-
-.model-card:hover {
-    transform: rotate(0deg) translateY(-5px);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
 }
 
 /* Category badge */
@@ -331,17 +349,17 @@ body::before {
 
 /* Card content */
 .card-content {
-    padding: var(--space-lg);
+    padding: var(--space-md);
     position: relative;
 }
 
 /* Big index number */
 .card-index {
     position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
+    top: var(--space-sm);
+    right: var(--space-sm);
     font-family: var(--font-display);
-    font-size: 5rem;
+    font-size: 3rem;
     line-height: 1;
     color: var(--black);
     opacity: 0.08;
@@ -349,14 +367,14 @@ body::before {
 
 /* Card header */
 .card-header {
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-sm);
     border-bottom: 2px solid var(--black);
 }
 
 .model-name {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.5rem, 4vw, 2rem);
     line-height: 1;
     letter-spacing: -0.01em;
     text-transform: uppercase;
@@ -377,30 +395,30 @@ body::before {
 .model-date {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     background: var(--black);
     color: var(--lime);
-    padding: 0.3em 0.6em;
-    margin-bottom: var(--space-md);
+    padding: 0.25em 0.5em;
+    margin-bottom: var(--space-sm);
 }
 
 /* Specs grid */
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
 }
 
 .spec-item {
     background: var(--off-white);
-    padding: var(--space-sm);
+    padding: 0.4rem;
 }
 
 .spec-label {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     opacity: 0.5;
@@ -409,27 +427,27 @@ body::before {
 
 .spec-value {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
 }
 
 /* Insight */
 .model-insight {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 
 .insight-label {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--magenta);
     margin-bottom: var(--space-xs);
     letter-spacing: 0.05em;
 }
 
 .model-insight p {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.8rem;
+    line-height: 1.4;
     color: var(--black);
 }
 
@@ -437,19 +455,19 @@ body::before {
 .card-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-sm);
-    padding-top: var(--space-md);
+    gap: var(--space-xs);
+    padding-top: var(--space-sm);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-link {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--black);
     text-decoration: none;
-    padding: 0.4em 0.8em;
+    padding: 0.3em 0.6em;
     border: 2px solid var(--black);
     transition: all 0.1s ease;
 }
