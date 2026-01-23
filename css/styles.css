@@ -129,9 +129,81 @@ body {
     position: relative;
     flex: 1;
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    gap: var(--space-md);
+}
+
+/* --- SCRUBBER BAR --- */
+.scrubber-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0 var(--space-xl);
+    flex-shrink: 0;
+}
+
+.scrubber-track {
+    flex: 1;
+    height: 4px;
+    background: var(--gray-200);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.scrubber-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 0%;
+    pointer-events: none;
+}
+
+.scrubber-thumb {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: grab;
+    transition: transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.scrubber-thumb:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.scrubber-thumb:active,
+.scrubber-thumb.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.scrubber-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    letter-spacing: 0.05em;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* --- CAROUSEL WRAPPER --- */
+.carousel-wrapper {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    position: relative;
     min-height: 0;
 }
 
@@ -143,44 +215,36 @@ body {
     z-index: 100;
 }
 
-.carousel-nav--prev { left: 0; }
-.carousel-nav--next { right: 0; }
+.carousel-nav--prev { left: var(--space-md); }
+.carousel-nav--next { right: var(--space-md); }
 
 .nav-btn {
-    background: transparent;
-    border: none;
-    color: var(--gray-400);
-    width: 48px;
-    height: 48px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 1.25rem;
-    transition: color 0.2s ease;
+    font-size: 1rem;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .nav-btn:hover {
     color: var(--black);
-}
-
-/* Counter */
-.carousel-counter {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--gray-400);
-    letter-spacing: 0.1em;
+    border-color: var(--gray-400);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Keyboard hint */
 .keyboard-hint {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: var(--space-sm);
+    right: var(--space-md);
     font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--gray-400);
@@ -199,34 +263,52 @@ body {
 
 /* --- CARD STYLES --- */
 #carousel {
+    --card-width: clamp(320px, 30vw, 440px);
+    --fan-offset: clamp(40%, 45vw, 55%);
+
+    position: relative;
     width: 100%;
-    max-width: 1100px;
+    height: 100%;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    gap: 1.5rem;
-    padding: 0 3rem;
-    margin: 0 auto;
 }
 
 .card-wrapper {
-    position: relative;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
+    position: absolute;
+    width: var(--card-width);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-wrapper--side {
-    flex: 0 0 280px;
-    opacity: 0.4;
-    transform: scale(0.95);
+/* Side cards - positioned behind and to the side */
+.card-wrapper--left {
+    left: calc(50% - var(--fan-offset));
+    transform: translateX(-50%) scale(0.9);
+    z-index: 1;
+    opacity: 0.7;
 }
 
-.card-wrapper--side:hover {
-    opacity: 0.6;
+.card-wrapper--right {
+    right: calc(50% - var(--fan-offset));
+    transform: translateX(50%) scale(0.9);
+    z-index: 1;
+    opacity: 0.7;
 }
 
+.card-wrapper--left:hover,
+.card-wrapper--right:hover {
+    opacity: 0.85;
+    transform: translateX(-50%) scale(0.92);
+}
+
+.card-wrapper--right:hover {
+    transform: translateX(50%) scale(0.92);
+}
+
+/* Center card - front and center */
 .card-wrapper--center {
-    flex: 0 0 420px;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
     z-index: 10;
 }
 
@@ -236,15 +318,16 @@ body {
     color: var(--black);
     position: relative;
     width: 100%;
-    height: 100%;
     border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    max-height: calc(100vh - 200px);
+    border-radius: 12px;
+    max-height: calc(100vh - 240px);
     overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .card-wrapper--center .model-card {
-    border-color: var(--gray-800);
+    border-color: var(--gray-300);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* Category badge */
@@ -436,19 +519,32 @@ body {
 }
 
 /* --- RESPONSIVE --- */
-@media (max-width: 1024px) {
-    .card-wrapper--side {
+@media (max-width: 1200px) {
+    #carousel {
+        --fan-offset: clamp(35%, 40vw, 50%);
+    }
+}
+
+@media (max-width: 900px) {
+    .card-wrapper--left,
+    .card-wrapper--right {
         display: none;
     }
 
     .card-wrapper--center {
-        flex: 1;
-        max-width: 500px;
+        position: relative;
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: 440px;
     }
 
     #carousel {
-        padding: 0 var(--space-xl);
+        padding: 0 var(--space-lg);
     }
+
+    .carousel-nav--prev { left: var(--space-sm); }
+    .carousel-nav--next { right: var(--space-sm); }
 }
 
 @media (max-width: 768px) {
@@ -472,8 +568,9 @@ body {
         text-align: left;
     }
 
-    .carousel-nav--prev { left: var(--space-sm); }
-    .carousel-nav--next { right: var(--space-sm); }
+    .scrubber-container {
+        padding: 0 var(--space-md);
+    }
 
     .card-content {
         padding: var(--space-md);
@@ -485,6 +582,12 @@ body {
 
     .keyboard-hint {
         display: none;
+    }
+
+    .nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.875rem;
     }
 }
 

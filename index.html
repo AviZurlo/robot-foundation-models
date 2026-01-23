@@ -45,21 +45,29 @@
         <!-- Main content -->
         <main id="main-content" style="display: none;">
             <section class="carousel-section">
-                <!-- Prev arrow -->
-                <nav class="carousel-nav carousel-nav--prev">
-                    <button class="nav-btn" onclick="prevCard()" aria-label="Previous model">←</button>
-                </nav>
+                <!-- Scrubber bar for quick navigation -->
+                <div class="scrubber-container">
+                    <div class="scrubber-track" id="scrubber-track">
+                        <div class="scrubber-progress" id="scrubber-progress"></div>
+                        <div class="scrubber-thumb" id="scrubber-thumb"></div>
+                    </div>
+                    <div class="scrubber-label" id="scrubber-label">01 / 00</div>
+                </div>
 
                 <!-- Card display area -->
-                <div id="carousel"></div>
+                <div class="carousel-wrapper">
+                    <!-- Prev arrow -->
+                    <nav class="carousel-nav carousel-nav--prev">
+                        <button class="nav-btn" onclick="prevCard()" aria-label="Previous model">←</button>
+                    </nav>
 
-                <!-- Next arrow -->
-                <nav class="carousel-nav carousel-nav--next">
-                    <button class="nav-btn" onclick="nextCard()" aria-label="Next model">→</button>
-                </nav>
+                    <div id="carousel"></div>
 
-                <!-- Counter -->
-                <div class="carousel-counter" id="carousel-counter">01 / 00</div>
+                    <!-- Next arrow -->
+                    <nav class="carousel-nav carousel-nav--next">
+                        <button class="nav-btn" onclick="nextCard()" aria-label="Next model">→</button>
+                    </nav>
+                </div>
 
                 <!-- Keyboard hint -->
                 <div class="keyboard-hint">

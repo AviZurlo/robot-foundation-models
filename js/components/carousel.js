@@ -7,17 +7,21 @@ import { getCategoryColor } from '../config.js';
 
 let currentIndex = 0;
 let carouselContainer = null;
+let isDragging = false;
 
 export function initCarousel(containerId) {
     carouselContainer = document.getElementById(containerId);
     if (!carouselContainer) return;
-    
+
     // Keyboard navigation
     document.addEventListener('keydown', handleKeydown);
-    
+
+    // Initialize scrubber
+    initScrubber();
+
     // Initial render
     renderCurrentCard();
-    updateCounter();
+    updateScrubber();
 }
 
 function handleKeydown(e) {
@@ -28,34 +32,111 @@ function handleKeydown(e) {
     }
 }
 
+// --- SCRUBBER FUNCTIONALITY ---
+function initScrubber() {
+    const track = document.getElementById('scrubber-track');
+    const thumb = document.getElementById('scrubber-thumb');
+
+    if (!track || !thumb) return;
+
+    // Click on track to jump
+    track.addEventListener('click', (e) => {
+        if (isDragging) return;
+        handleScrubberInteraction(e, track);
+    });
+
+    // Drag thumb
+    thumb.addEventListener('mousedown', startDrag);
+    thumb.addEventListener('touchstart', startDrag, { passive: false });
+
+    document.addEventListener('mousemove', handleDrag);
+    document.addEventListener('touchmove', handleDrag, { passive: false });
+
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
+}
+
+function startDrag(e) {
+    e.preventDefault();
+    isDragging = true;
+    const thumb = document.getElementById('scrubber-thumb');
+    if (thumb) thumb.classList.add('dragging');
+}
+
+function handleDrag(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const track = document.getElementById('scrubber-track');
+    if (!track) return;
+
+    handleScrubberInteraction(e, track);
+}
+
+function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    const thumb = document.getElementById('scrubber-thumb');
+    if (thumb) thumb.classList.remove('dragging');
+}
+
+function handleScrubberInteraction(e, track) {
+    const rect = track.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    let percent = (clientX - rect.left) / rect.width;
+    percent = Math.max(0, Math.min(1, percent));
+
+    const newIndex = Math.round(percent * (allModels.length - 1));
+    if (newIndex !== currentIndex) {
+        currentIndex = newIndex;
+        renderCurrentCard();
+        updateScrubber();
+    }
+}
+
+function updateScrubber() {
+    const thumb = document.getElementById('scrubber-thumb');
+    const progress = document.getElementById('scrubber-progress');
+    const label = document.getElementById('scrubber-label');
+
+    if (allModels.length === 0) return;
+
+    const percent = (currentIndex / (allModels.length - 1)) * 100;
+
+    if (thumb) {
+        thumb.style.left = `${percent}%`;
+    }
+    if (progress) {
+        progress.style.width = `${percent}%`;
+    }
+    if (label) {
+        label.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(allModels.length).padStart(2, '0')}`;
+    }
+}
+
+// --- CARD NAVIGATION ---
 export function nextCard() {
     if (allModels.length === 0) return;
     currentIndex = (currentIndex + 1) % allModels.length;
     renderCurrentCard();
-    updateCounter();
+    updateScrubber();
 }
 
 export function prevCard() {
     if (allModels.length === 0) return;
     currentIndex = (currentIndex - 1 + allModels.length) % allModels.length;
     renderCurrentCard();
-    updateCounter();
+    updateScrubber();
 }
 
 export function goToCard(index) {
     if (index < 0 || index >= allModels.length) return;
     currentIndex = index;
     renderCurrentCard();
-    updateCounter();
+    updateScrubber();
 }
 
-function updateCounter() {
-    const counter = document.getElementById('carousel-counter');
-    if (counter) {
-        counter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(allModels.length).padStart(2, '0')}`;
-    }
-}
-
+// --- CARD RENDERING ---
 function renderCurrentCard() {
     if (!carouselContainer || allModels.length === 0) return;
 
@@ -63,22 +144,43 @@ function renderCurrentCard() {
     const prevIndex = (currentIndex - 1 + allModels.length) % allModels.length;
     const nextIndex = (currentIndex + 1) % allModels.length;
 
-    // Render all three cards
+    // Render all three cards: left (behind), center (front), right (behind)
     carouselContainer.innerHTML = `
-        ${renderCard(allModels[prevIndex], prevIndex, 'side')}
+        ${renderCard(allModels[prevIndex], prevIndex, 'left')}
         ${renderCard(allModels[currentIndex], currentIndex, 'center')}
-        ${renderCard(allModels[nextIndex], nextIndex, 'side')}
+        ${renderCard(allModels[nextIndex], nextIndex, 'right')}
     `;
+
+    // Add click handlers to side cards for navigation
+    const leftCard = carouselContainer.querySelector('.card-wrapper--left');
+    const rightCard = carouselContainer.querySelector('.card-wrapper--right');
+
+    if (leftCard) {
+        leftCard.style.cursor = 'pointer';
+        leftCard.addEventListener('click', prevCard);
+    }
+    if (rightCard) {
+        rightCard.style.cursor = 'pointer';
+        rightCard.addEventListener('click', nextCard);
+    }
 }
 
 function renderCard(model, index, position) {
     const categoryColor = getCategoryColor(model.category);
-    const wrapperClass = position === 'center' ? 'card-wrapper card-wrapper--center' : 'card-wrapper card-wrapper--side';
+
+    let wrapperClass = 'card-wrapper';
+    if (position === 'center') {
+        wrapperClass += ' card-wrapper--center';
+    } else if (position === 'left') {
+        wrapperClass += ' card-wrapper--left';
+    } else if (position === 'right') {
+        wrapperClass += ' card-wrapper--right';
+    }
 
     return `
         <div class="${wrapperClass}">
             <article class="model-card">
-                <!-- Category badge - floating -->
+                <!-- Category badge -->
                 <div class="category-badge" style="background: ${categoryColor.bg}; color: ${categoryColor.text}">
                     ${model.category || 'UNKNOWN'}
                 </div>
@@ -97,31 +199,31 @@ function renderCard(model, index, position) {
                     <div class="specs-grid">
                         ${model.backbone && model.backbone !== '—' && model.backbone !== 'N/A' ? `
                             <div class="spec-item">
-                                <span class="spec-label">BACKBONE</span>
+                                <span class="spec-label">Backbone</span>
                                 <span class="spec-value">${model.backbone}</span>
                             </div>
                         ` : ''}
                         ${model.params && model.params !== '—' && model.params !== 'N/A' ? `
                             <div class="spec-item">
-                                <span class="spec-label">PARAMS</span>
+                                <span class="spec-label">Params</span>
                                 <span class="spec-value">${model.params}</span>
                             </div>
                         ` : ''}
                         ${model.decoder && model.decoder !== '—' && model.decoder !== 'N/A' ? `
                             <div class="spec-item">
-                                <span class="spec-label">DECODER</span>
+                                <span class="spec-label">Decoder</span>
                                 <span class="spec-value">${model.decoder}</span>
                             </div>
                         ` : ''}
                         ${model.speed && model.speed !== '—' && model.speed !== 'N/A' ? `
                             <div class="spec-item">
-                                <span class="spec-label">SPEED</span>
+                                <span class="spec-label">Speed</span>
                                 <span class="spec-value">${model.speed}</span>
                             </div>
                         ` : ''}
                         ${model.data && model.data !== '—' && model.data !== 'N/A' ? `
                             <div class="spec-item">
-                                <span class="spec-label">DATA</span>
+                                <span class="spec-label">Data</span>
                                 <span class="spec-value">${model.data}</span>
                             </div>
                         ` : ''}
