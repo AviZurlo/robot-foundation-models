@@ -85,9 +85,6 @@ function renderCard(model, index, position) {
 
                 <!-- Main content area -->
                 <div class="card-content">
-                    <!-- Header with index number -->
-                    <div class="card-index">${String(index + 1).padStart(2, '0')}</div>
-
                     <header class="card-header">
                         <h2 class="model-name">${model.name}</h2>
                         <div class="model-org">${model.org}</div>
@@ -133,17 +130,17 @@ function renderCard(model, index, position) {
                     <!-- Insight text -->
                     ${model.insight && model.insight !== '—' && model.insight !== 'N/A' ? `
                         <div class="model-insight">
-                            <span class="insight-label">INSIGHT_</span>
+                            <span class="insight-label">Insight</span>
                             <p>${model.insight}</p>
                         </div>
                     ` : ''}
 
                     <!-- Links -->
                     <nav class="card-links">
-                        ${model.paper_link ? `<a href="${model.paper_link}" class="card-link" target="_blank" rel="noopener">Paper↗</a>` : ''}
-                        ${model.website_link ? `<a href="${model.website_link}" class="card-link" target="_blank" rel="noopener">Site↗</a>` : ''}
-                        ${model.github_link ? `<a href="${model.github_link}" class="card-link" target="_blank" rel="noopener">GitHub↗</a>` : ''}
-                        ${model.blog_link ? `<a href="${model.blog_link}" class="card-link" target="_blank" rel="noopener">Blog↗</a>` : ''}
+                        ${model.paper_link ? `<a href="${model.paper_link}" class="card-link" target="_blank" rel="noopener">Paper</a>` : ''}
+                        ${model.website_link ? `<a href="${model.website_link}" class="card-link" target="_blank" rel="noopener">Website</a>` : ''}
+                        ${model.github_link ? `<a href="${model.github_link}" class="card-link" target="_blank" rel="noopener">GitHub</a>` : ''}
+                        ${model.blog_link ? `<a href="${model.blog_link}" class="card-link" target="_blank" rel="noopener">Blog</a>` : ''}
                     </nav>
                 </div>
             </article>

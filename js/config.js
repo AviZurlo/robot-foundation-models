@@ -26,14 +26,14 @@ export const CONFIG = {
     }
 };
 
-// Category color mapping for visual distinction
+// Category color mapping - minimal, muted palette
 export const CATEGORY_COLORS = {
-    'VLA': { bg: '#00FF00', text: '#000000' },
-    'VAM': { bg: '#FF6B00', text: '#000000' },
-    'Video World Model': { bg: '#00FFFF', text: '#000000' },
-    'World Model': { bg: '#00FFFF', text: '#000000' },
-    'LLM Planner': { bg: '#FF00FF', text: '#000000' },
-    'default': { bg: '#FFFF00', text: '#000000' }
+    'VLA': { bg: '#E8F5E9', text: '#2E7D32' },
+    'VAM': { bg: '#FFF3E0', text: '#E65100' },
+    'Video World Model': { bg: '#E3F2FD', text: '#1565C0' },
+    'World Model': { bg: '#E3F2FD', text: '#1565C0' },
+    'LLM Planner': { bg: '#F3E5F5', text: '#7B1FA2' },
+    'default': { bg: '#F5F5F5', text: '#616161' }
 };
 
 export function getCategoryColor(category) {
