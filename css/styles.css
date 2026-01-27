@@ -330,46 +330,14 @@ body {
     color: #C62828;
 }
 
-.grid-card-date-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-md);
-    border-bottom: 1px solid var(--gray-100);
-}
-
-.grid-card-sota {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.sota-label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: #b45309;
-    letter-spacing: 0.05em;
-}
-
-.sota-benchmark {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #92400e;
-    border-radius: 3px;
-    border: 1px solid #fcd34d;
-}
-
 .grid-card-date {
+    display: block;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--gray-400);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--gray-100);
 }
 
 .grid-card-specs {

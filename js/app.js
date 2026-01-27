@@ -279,41 +279,6 @@ function getAccessLabel(availability) {
     return { short: str, full: null };
 }
 
-// Detect if model has SOTA achievements from performance data
-function getSOTABenchmarks(model) {
-    // Exclude models that shouldn't show SOTA
-    const excludedModels = ['Gemini Robotics'];
-    if (excludedModels.includes(model.name)) {
-        return [];
-    }
-
-    const sotaList = [];
-    const text = `${model.perf_headline || ''} ${model.perf_comparisons || ''}`.toLowerCase();
-
-    // Look for "SOTA" mentions and extract benchmark names
-    const sotaPattern = /sota\s+([a-z0-9\-_]+)/gi;
-    let match;
-    while ((match = sotaPattern.exec(text)) !== null) {
-        const benchmark = match[1].toUpperCase();
-        if (!sotaList.includes(benchmark)) {
-            sotaList.push(benchmark);
-        }
-    }
-
-    // Also check perf_headline for patterns like "98.5% LIBERO SOTA"
-    if (model.perf_headline) {
-        const headlinePattern = /([a-z0-9\-_]+)\s+sota/gi;
-        while ((match = headlinePattern.exec(model.perf_headline)) !== null) {
-            const benchmark = match[1].toUpperCase();
-            if (!sotaList.includes(benchmark)) {
-                sotaList.push(benchmark);
-            }
-        }
-    }
-
-    return sotaList;
-}
-
 // Known datasets to extract from data_sources text
 const KNOWN_DATASETS = [
     'Open X-Embodiment', 'OXE', 'Open-X',
@@ -651,8 +616,6 @@ function renderGrid() {
     gridContainer.innerHTML = filteredModels.map(model => {
         const categoryColor = getCategoryColor(model.category);
         const opensourceClass = model.opensource === 'Yes' ? 'opensource-yes' : model.opensource === 'Partial' ? 'opensource-partial' : 'opensource-no';
-        const sotaBenchmarks = getSOTABenchmarks(model);
-        const hasSOTA = sotaBenchmarks.length > 0;
         return `
             <article class="grid-card" data-model-id="${model.id}" data-date="${model.date}">
                 <div class="grid-card-header">
@@ -667,10 +630,7 @@ function renderGrid() {
                         ${model.opensource ? `<div class="grid-card-badge-os ${opensourceClass}">${model.opensource === 'Yes' ? 'OS' : model.opensource === 'Partial' ? 'P' : 'C'}</div>` : ''}
                     </div>
                 </div>
-                <div class="grid-card-date-row">
-                    <time class="grid-card-date">${model.date}</time>
-                    ${hasSOTA ? `<div class="grid-card-sota"><span class="sota-label">SOTA</span>${sotaBenchmarks.map(b => `<span class="sota-benchmark">${b}</span>`).join('')}</div>` : ''}
-                </div>
+                <time class="grid-card-date">${model.date}</time>
                 <div class="grid-card-specs">
                     <div class="grid-card-spec">
                         <span class="spec-label">Backbone</span>
