@@ -130,7 +130,6 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     min-height: 0;
     gap: var(--space-md);
 }
@@ -204,7 +203,8 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    min-height: 0;
+    min-height: 400px;
+    padding: 0 var(--space-xl);
 }
 
 /* Navigation arrows */
@@ -263,49 +263,46 @@ body {
 
 /* --- CARD STYLES --- */
 #carousel {
-    --card-width: clamp(320px, 30vw, 440px);
-    --fan-offset: clamp(40%, 45vw, 55%);
+    --card-width: clamp(300px, 28vw, 400px);
+    --overlap: clamp(-180px, -15vw, -120px);
 
-    position: absolute;
-    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
 }
 
 .card-wrapper {
-    position: absolute;
     width: var(--card-width);
-    top: 50%;
+    flex-shrink: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Side cards - positioned behind and to the side */
+/* Side cards - overlapping behind center */
 .card-wrapper--left {
-    left: calc(50% - var(--fan-offset));
-    transform: translate(-50%, -50%) scale(0.9);
+    margin-right: var(--overlap);
+    transform: scale(0.9);
     z-index: 1;
     opacity: 0.7;
 }
 
 .card-wrapper--right {
-    right: calc(50% - var(--fan-offset));
-    transform: translate(50%, -50%) scale(0.9);
+    margin-left: var(--overlap);
+    transform: scale(0.9);
     z-index: 1;
     opacity: 0.7;
 }
 
-.card-wrapper--left:hover {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) scale(0.92);
-}
-
+.card-wrapper--left:hover,
 .card-wrapper--right:hover {
     opacity: 0.85;
-    transform: translate(50%, -50%) scale(0.92);
+    transform: scale(0.92);
 }
 
 /* Center card - front and center */
 .card-wrapper--center {
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
     z-index: 10;
 }
 
@@ -516,9 +513,9 @@ body {
 }
 
 /* --- RESPONSIVE --- */
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
     #carousel {
-        --fan-offset: clamp(35%, 40vw, 50%);
+        --overlap: clamp(-140px, -12vw, -100px);
     }
 }
 
@@ -528,11 +525,18 @@ body {
         display: none;
     }
 
+    #carousel {
+        justify-content: center;
+    }
+
     .card-wrapper--center {
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: calc(100% - var(--space-xl));
+        width: 100%;
         max-width: 440px;
+        transform: none;
+    }
+
+    .carousel-wrapper {
+        padding: 0 var(--space-md);
     }
 
     .carousel-nav--prev { left: var(--space-sm); }
