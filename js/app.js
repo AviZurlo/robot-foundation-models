@@ -667,8 +667,10 @@ function renderGrid() {
                         ${model.opensource ? `<div class="grid-card-badge-os ${opensourceClass}">${model.opensource === 'Yes' ? 'OS' : model.opensource === 'Partial' ? 'P' : 'C'}</div>` : ''}
                     </div>
                 </div>
-                ${hasSOTA ? `<div class="grid-card-sota"><span class="sota-label">SOTA</span>${sotaBenchmarks.map(b => `<span class="sota-benchmark">${b}</span>`).join('')}</div>` : ''}
-                <time class="grid-card-date">${model.date}</time>
+                <div class="grid-card-date-row">
+                    <time class="grid-card-date">${model.date}</time>
+                    ${hasSOTA ? `<div class="grid-card-sota"><span class="sota-label">SOTA</span>${sotaBenchmarks.map(b => `<span class="sota-benchmark">${b}</span>`).join('')}</div>` : ''}
+                </div>
                 <div class="grid-card-specs">
                     <div class="grid-card-spec">
                         <span class="spec-label">Backbone</span>
