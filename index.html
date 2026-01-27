@@ -30,6 +30,259 @@
             </div>
         </header>
 
+        <!-- Architecture Evolution -->
+        <section class="arch-evolution" id="arch-evolution">
+            <div class="arch-cards-wrapper">
+                <div class="arch-cards">
+                    <!-- LLM-Planner -->
+                    <div class="arch-card" data-color="purple">
+                        <div class="arch-card-header">
+                            <span class="arch-card-label">LLM-Planner</span>
+                        </div>
+                        <div class="arch-schematic">
+                            <div class="arch-flow-vertical">
+                                <div class="arch-row">
+                                    <div class="arch-box arch-input">Image</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-core">LLM</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-intermediate">"Text Plan"</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-secondary">Skill Policy</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-actions">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Task Policy -->
+                    <div class="arch-card" data-color="gray">
+                        <div class="arch-card-header">
+                            <span class="arch-card-label">Multi-Task Policy</span>
+                        </div>
+                        <div class="arch-schematic">
+                            <div class="arch-flow-vertical">
+                                <div class="arch-row">
+                                    <div class="arch-box arch-input">Image + Language</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-core arch-large">Transformer</div>
+                                </div>
+                                <div class="arch-box-subtitle">from scratch</div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-actions">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VLA -->
+                    <div class="arch-card" data-color="green">
+                        <div class="arch-card-header">
+                            <span class="arch-card-label">VLA</span>
+                        </div>
+                        <div class="arch-schematic">
+                            <div class="arch-flow-vertical">
+                                <div class="arch-row">
+                                    <div class="arch-box arch-input">Image + Language</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-pretrained arch-large">VLM Backbone</div>
+                                </div>
+                                <div class="arch-box-subtitle">*pretrained</div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-secondary">Action Decoder</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-actions">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VAM -->
+                    <div class="arch-card" data-color="orange">
+                        <div class="arch-card-header">
+                            <span class="arch-card-label">VAM</span>
+                        </div>
+                        <div class="arch-schematic">
+                            <div class="arch-flow-vertical">
+                                <div class="arch-row">
+                                    <div class="arch-box arch-input">Frame t, t+1</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-pretrained arch-large">Video Backbone</div>
+                                </div>
+                                <div class="arch-box-subtitle">*pretrained</div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-secondary">IDM</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-actions">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- World-Model -->
+                    <div class="arch-card" data-color="blue">
+                        <div class="arch-card-header">
+                            <span class="arch-card-label">World-Model</span>
+                        </div>
+                        <div class="arch-schematic">
+                            <div class="arch-flow-vertical">
+                                <div class="arch-row">
+                                    <div class="arch-box arch-input">Image</div>
+                                </div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-pretrained arch-large">Video Model</div>
+                                </div>
+                                <div class="arch-box-subtitle">*pretrained</div>
+                                <div class="arch-arrow-down">↓</div>
+                                <div class="arch-row">
+                                    <div class="arch-box arch-dashed">Predicted Future</div>
+                                </div>
+                                <div class="arch-box-subtitle arch-warning">no actions</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="arch-expand-bar" id="arch-toggle-all" aria-expanded="false">
+                    <span class="arch-expand-bar-text">Click to expand details</span>
+                    <span class="arch-expand-bar-icon">▼</span>
+                </button>
+                <div class="arch-details-section">
+                    <div class="arch-details-panel" data-color="purple">
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Description</span>
+                            <p>LLM reasons in language, outputs text plans executed by separate skill policies.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Significance</span>
+                            <p>First attempt to leverage LLM knowledge for robotics. Proved LLMs can reason about physical tasks but can't directly control robots.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Examples</span>
+                            <p>SayCan, Code as Policies</p>
+                        </div>
+                    </div>
+                    <div class="arch-details-panel" data-color="gray">
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Description</span>
+                            <p>End-to-end transformer trained primarily on robot data. No VLM or video model backbone.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Significance</span>
+                            <p>Proved a single policy could generalize across hundreds of tasks and environments. Laid groundwork for VLAs by demonstrating transformers work for robotics.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Examples</span>
+                            <p>RT-1, Octo</p>
+                        </div>
+                    </div>
+                    <div class="arch-details-panel" data-color="green">
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Description</span>
+                            <p>VLM backbone provides semantic understanding. Action decoder maps understanding → motion.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Significance</span>
+                            <p>Dominant paradigm 2023-2025. First end-to-end approach inheriting web-scale knowledge from vision-language pretraining.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Examples</span>
+                            <p>RT-2, OpenVLA, π0, GR00T N1</p>
+                        </div>
+                    </div>
+                    <div class="arch-details-panel" data-color="orange">
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Description</span>
+                            <p>Video backbone provides physical dynamics. IDM maps state transitions → actions.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Significance</span>
+                            <p>Emerging paradigm. 10x+ data efficiency over VLAs in early results by inheriting physics understanding from video.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Examples</span>
+                            <p>Cosmos Policy, mimic-video, 1XWM</p>
+                        </div>
+                    </div>
+                    <div class="arch-details-panel" data-color="blue">
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Description</span>
+                            <p>Learns to predict future states from video. Doesn't output actions directly.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Significance</span>
+                            <p>Foundation for VAMs. Enables planning by "imagining" outcomes before acting.</p>
+                        </div>
+                        <div class="arch-detail-item">
+                            <span class="arch-detail-label">Examples</span>
+                            <p>Cosmos WFM, V-JEPA 2, Genie 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline -->
+        <div class="timeline-container" id="timeline-container">
+            <div class="timeline-scroll">
+                <div class="timeline-track" id="timeline-track"></div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters" id="filters">
+            <div class="filters-left">
+                <div class="filter-group">
+                    <label class="filter-label">Organization</label>
+                    <select class="filter-select" id="filter-org">
+                        <option value="">All Organizations</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Model Type</label>
+                    <select class="filter-select" id="filter-type">
+                        <option value="">All Types</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Sort by Date</label>
+                    <select class="filter-select" id="sort-date">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+                <button class="filter-reset" id="filter-reset">Reset</button>
+            </div>
+            <div class="filters-right">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" id="filter-search" placeholder="Search models...">
+                </div>
+            </div>
+        </div>
+
         <!-- Loading state -->
         <div id="loading" class="loading">
             <div class="loading-spinner"></div>
@@ -43,40 +296,23 @@
         </div>
 
         <!-- Main content -->
-        <main id="main-content" style="display: none;">
-            <section class="carousel-section">
-                <!-- Scrubber bar for quick navigation -->
-                <div class="scrubber-container">
-                    <div class="scrubber-track" id="scrubber-track">
-                        <div class="scrubber-progress" id="scrubber-progress"></div>
-                        <div class="scrubber-thumb" id="scrubber-thumb"></div>
-                    </div>
-                    <div class="scrubber-label" id="scrubber-label">01 / 00</div>
-                </div>
-
-                <!-- Card display area -->
-                <div class="carousel-wrapper">
-                    <!-- Prev arrow -->
-                    <nav class="carousel-nav carousel-nav--prev">
-                        <button class="nav-btn" onclick="prevCard()" aria-label="Previous model">←</button>
-                    </nav>
-
-                    <div id="carousel"></div>
-
-                    <!-- Next arrow -->
-                    <nav class="carousel-nav carousel-nav--next">
-                        <button class="nav-btn" onclick="nextCard()" aria-label="Next model">→</button>
-                    </nav>
-                </div>
-
-                <!-- Keyboard hint -->
-                <div class="keyboard-hint">
-                    <span class="key">←</span>
-                    <span class="key">→</span>
-                    <span>to navigate</span>
-                </div>
-            </section>
+        <main id="main-content">
+            <div class="cards-grid" id="cards-grid"></div>
         </main>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Maintained by <a href="https://x.com/avizurlo" target="_blank" rel="noopener">@avizurlo</a></p>
+    </footer>
+
+    <!-- Modal for detailed view -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="modal">
+            <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-content" id="modal-content"></div>
+        </div>
     </div>
 
     <script type="module" src="js/app.js"></script>
