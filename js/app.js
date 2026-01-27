@@ -10,6 +10,14 @@ let allModels = [];
 let filteredModels = [];
 let openModal = null;
 
+// Era segments for timeline (colored line segments)
+const eraSegments = [
+    { start: null, end: 'Apr 2022', color: 'var(--gray-200)', label: null },
+    { start: 'Apr 2022', end: 'Jul 2023', color: '#8b5cf6', label: 'LLM Era' },
+    { start: 'Jul 2023', end: 'Dec 2025', color: '#22c55e', label: 'VLA Era' },
+    { start: 'Dec 2025', end: null, color: '#f97316', label: 'VAM Era' }
+];
+
 async function init() {
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
@@ -700,10 +708,31 @@ function renderTimeline() {
     // Use percentage-based positioning
     const paddingPercent = 3;
 
-    // Add the main line
-    const line = document.createElement('div');
-    line.className = 'timeline-line';
-    track.appendChild(line);
+    // Add colored era segments
+    eraSegments.forEach(era => {
+        const startTime = era.start ? parseDate(era.start) : minTime;
+        const endTime = era.end ? parseDate(era.end) : maxTime;
+
+        const startPercent = paddingPercent + ((startTime - minTime) / timeRange) * (100 - paddingPercent * 2);
+        const endPercent = paddingPercent + ((endTime - minTime) / timeRange) * (100 - paddingPercent * 2);
+
+        const segment = document.createElement('div');
+        segment.className = 'timeline-segment';
+        segment.style.left = `${startPercent}%`;
+        segment.style.width = `${endPercent - startPercent}%`;
+        segment.style.background = era.color;
+        track.appendChild(segment);
+
+        // Add era label at the start of colored segments
+        if (era.label) {
+            const label = document.createElement('div');
+            label.className = 'timeline-era-label';
+            label.style.left = `${startPercent}%`;
+            label.style.color = era.color;
+            label.textContent = era.label;
+            track.appendChild(label);
+        }
+    });
 
     // Generate year labels
     const startYear = 2022;

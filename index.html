@@ -64,29 +64,6 @@
                         </div>
                     </div>
 
-                    <!-- Multi-Task Policy -->
-                    <div class="arch-card" data-color="gray">
-                        <div class="arch-card-header">
-                            <span class="arch-card-label">Multi-Task Policy</span>
-                        </div>
-                        <div class="arch-schematic">
-                            <div class="arch-flow-vertical">
-                                <div class="arch-row">
-                                    <div class="arch-box arch-input">Image + Language</div>
-                                </div>
-                                <div class="arch-arrow-down">↓</div>
-                                <div class="arch-row">
-                                    <div class="arch-box arch-core arch-large">Transformer</div>
-                                </div>
-                                <div class="arch-box-subtitle">from scratch</div>
-                                <div class="arch-arrow-down">↓</div>
-                                <div class="arch-row">
-                                    <div class="arch-box arch-actions">Actions</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- VLA -->
                     <div class="arch-card" data-color="green">
                         <div class="arch-card-header">
@@ -140,30 +117,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- World-Model -->
-                    <div class="arch-card" data-color="blue">
-                        <div class="arch-card-header">
-                            <span class="arch-card-label">World-Model</span>
-                        </div>
-                        <div class="arch-schematic">
-                            <div class="arch-flow-vertical">
-                                <div class="arch-row">
-                                    <div class="arch-box arch-input">Image</div>
-                                </div>
-                                <div class="arch-arrow-down">↓</div>
-                                <div class="arch-row">
-                                    <div class="arch-box arch-pretrained arch-large">Video Model</div>
-                                </div>
-                                <div class="arch-box-subtitle">*pretrained</div>
-                                <div class="arch-arrow-down">↓</div>
-                                <div class="arch-row">
-                                    <div class="arch-box arch-dashed">Predicted Future</div>
-                                </div>
-                                <div class="arch-box-subtitle arch-warning">no actions</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <button class="arch-expand-bar" id="arch-toggle-all" aria-expanded="false">
                     <span class="arch-expand-bar-text">Click to expand details</span>
@@ -171,73 +124,27 @@
                 </button>
                 <div class="arch-details-section">
                     <div class="arch-details-panel" data-color="purple">
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Description</span>
-                            <p>LLM reasons in language, outputs text plans executed by separate skill policies.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Significance</span>
-                            <p>First attempt to leverage LLM knowledge for robotics. Proved LLMs can reason about physical tasks but can't directly control robots.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Examples</span>
-                            <p>SayCan, Code as Policies</p>
-                        </div>
-                    </div>
-                    <div class="arch-details-panel" data-color="gray">
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Description</span>
-                            <p>End-to-end transformer trained primarily on robot data. No VLM or video model backbone.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Significance</span>
-                            <p>Proved a single policy could generalize across hundreds of tasks and environments. Laid groundwork for VLAs by demonstrating transformers work for robotics.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Examples</span>
-                            <p>RT-1, Octo</p>
+                        <div class="arch-narrative">
+                            <h3 class="arch-narrative-header">"What if robots already understood language?"</h3>
+                            <p>LLMs have ingested the entire internet. They know that "get me a snack" means finding food and bringing it. <strong>SayCan</strong> (Google, 2022) was the first to harness this knowledge for robotics.</p>
+                            <p>But there was a problem: LLMs hallucinate. They'll confidently tell a robot to "pick up the sponge" when there's no sponge in sight. SayCan's fix was simple — before acting, check if the robot can actually do what the LLM suggests. This grounding took success rates from 38% to 84%.</p>
+                            <p class="arch-narrative-footer">What was still missing: LLMs can't see.</p>
                         </div>
                     </div>
                     <div class="arch-details-panel" data-color="green">
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Description</span>
-                            <p>VLM backbone provides semantic understanding. Action decoder maps understanding → motion.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Significance</span>
-                            <p>Dominant paradigm 2023-2025. First end-to-end approach inheriting web-scale knowledge from vision-language pretraining.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Examples</span>
-                            <p>RT-2, OpenVLA, π0, GR00T N1</p>
+                        <div class="arch-narrative">
+                            <h3 class="arch-narrative-header">"What if robots already understood images?"</h3>
+                            <p>Vision-language models (VLMs) understand images and text together. They are trained on billions of image-caption pairs from the internet. <strong>RT-2</strong> (Google DeepMind, 2023) was the first to fine-tune one directly for robot control.</p>
+                            <p>The payoff was immediate: when shown objects it had never seen during training, RT-2 succeeded 62% of the time versus 32% for the previous approach. It could recognize novel objects because its backbone had seen millions of internet images. <strong>OpenVLA</strong> (2024) then made the entire approach open-source, sparking the explosion of VLAs that followed: π0, GR00T, Helix, and dozens more.</p>
+                            <p class="arch-narrative-footer">What was still missing: VLMs learn from static images. They know what a cup is, but not how it moves when pushed.</p>
                         </div>
                     </div>
                     <div class="arch-details-panel" data-color="orange">
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Description</span>
-                            <p>Video backbone provides physical dynamics. IDM maps state transitions → actions.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Significance</span>
-                            <p>Emerging paradigm. 10x+ data efficiency over VLAs in early results by inheriting physics understanding from video.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Examples</span>
-                            <p>Cosmos Policy, mimic-video, 1XWM</p>
-                        </div>
-                    </div>
-                    <div class="arch-details-panel" data-color="blue">
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Description</span>
-                            <p>Learns to predict future states from video. Doesn't output actions directly.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Significance</span>
-                            <p>Foundation for VAMs. Enables planning by "imagining" outcomes before acting.</p>
-                        </div>
-                        <div class="arch-detail-item">
-                            <span class="arch-detail-label">Examples</span>
-                            <p>Cosmos WFM, V-JEPA 2, Genie 3</p>
+                        <div class="arch-narrative">
+                            <h3 class="arch-narrative-header">"What if robots already understood physics?"</h3>
+                            <p>Video models trained on internet footage have watched billions of examples of objects falling, hands grasping, liquids pouring. They already know how the world moves. <strong>GR-1</strong> (ByteDance, 2023) laid the groundwork for video-based robot control but <strong>mimic-video</strong> (2025) was the first to fully exploit this using a pretrained video model backbone.</p>
+                            <p>The early results are striking: 10x better sample efficiency than VLAs. <strong>Cosmos-Policy</strong> has state-of-the-art performance benchmarks. <strong>1XWM</strong> trained its entire action model on just 400 hours of robot data, compared to the 10,000+ hours that trained leading VLAs. The physics is already learned, all that remains is teaching the robot to act on it.</p>
+                            <p class="arch-narrative-footer">What's still unknown: Can VAMs follow language as well as VLAs? Can they be fast enough for real-world deployments?</p>
                         </div>
                     </div>
                 </div>
