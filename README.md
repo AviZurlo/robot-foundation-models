@@ -2,13 +2,11 @@
 
 A visual tracker for the evolution of robot foundation models, from LLM planners to VLAs to the emerging VAM paradigm.
 
-![Demo](./site.gif)
+![Site Demo](site.gif)
 
 Note that there is often incomplete or partial data available and real-world deployments almost never match lab-controlled experiments and results. Therefore this dashboard shouldn't be viewed as a canonical source of truth or a formalized literature review, rather it is a high-level snapshot of meaningful contributions that attempts to help viewers build an intuition of research trends and developments. 
 
 If you'd like to request a feature or want to connect, find me on X at [@avizurlo](https://x.com/avizurlo).
-
-![Site Demo](site.gif)
 
 ## Features
 
