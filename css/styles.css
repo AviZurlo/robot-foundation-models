@@ -748,8 +748,10 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--gray-100);
+}
+
+.modal-links-top {
+    margin-bottom: var(--space-md);
 }
 
 .modal-link {

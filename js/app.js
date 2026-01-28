@@ -115,6 +115,12 @@ function setupModal() {
             </div>
             <time class="modal-date">${model.date}</time>
 
+            <nav class="modal-links modal-links-top">
+                ${model.paper_link ? `<a href="${model.paper_link}" class="modal-link" target="_blank" rel="noopener">Paper</a>` : ''}
+                ${model.github_link ? `<a href="${model.github_link}" class="modal-link" target="_blank" rel="noopener">GitHub</a>` : ''}
+                ${model.blog_link ? `<a href="${model.blog_link}" class="modal-link" target="_blank" rel="noopener">Blog</a>` : ''}
+            </nav>
+
             <div class="modal-specs">
                 <div class="modal-spec">
                     <span class="spec-label">Backbone</span>
@@ -142,15 +148,12 @@ function setupModal() {
             ${renderDataProfile(model)}
 
             ${renderPerformance(model)}
-
-            <nav class="modal-links">
-                ${model.paper_link ? `<a href="${model.paper_link}" class="modal-link" target="_blank" rel="noopener">Paper</a>` : ''}
-                ${model.github_link ? `<a href="${model.github_link}" class="modal-link" target="_blank" rel="noopener">GitHub</a>` : ''}
-                ${model.blog_link ? `<a href="${model.blog_link}" class="modal-link" target="_blank" rel="noopener">Blog</a>` : ''}
-            </nav>
         `;
         modalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+
+        // Scroll modal content to top
+        modalContent.scrollTop = 0;
 
         // Process glossary terms in modal
         processGlossaryTerms(modalContent);

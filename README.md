@@ -2,6 +2,8 @@
 
 A visual tracker for the evolution of embodied AI and robot foundation models, from LLM planners to VLAs to the emerging VAM paradigm.
 
+![Site Demo](site.gif)
+
 ## Features
 
 - **Architecture Evolution** — Visual diagrams explaining the three major paradigms: LLM Planners, Vision-Language-Action models (VLAs), and Video-Action Models (VAMs)
